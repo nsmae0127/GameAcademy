@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -6,9 +8,75 @@ void GcdLcd();
 void StackPoint();
 void QueuePoint();
 
+#define BOMB 1
+
 int main()
 {
-	QueuePoint();
+	int bomb[10][10] = {0, }, player[10][10] = {0, };
+	int playerX, playerY, bombX, bombY;
+	int resultX = 0, resultY = 0;
+
+	// ½Ãµå°ª ¼³Á¤
+	srand((unsigned int)time(NULL));
+
+	// ÁÂÇ¥ x, y °ª ·£´ı
+	bombX = rand() % 10;
+	bombY = rand() % 10;
+
+	bomb[bombX][bombY] = BOMB;
+
+	cout << bombX << " " << bombY << endl;
+
+	while (1) {
+		
+		// »ç¿ëÀÚ·ÎºÎÅÍ ÁÂÇ¥ ÀÔ·Â ¹ŞÀ½
+		cout << "ÁÂÇ¥¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ";
+		cin >> playerX >> playerY;
+		
+		if (playerX == bombX && playerY == bombY)
+			player[playerX][playerY] = BOMB;
+
+		// ÀÔ·ÂÁÂÇ¥¿Í ÆøÅºÁÂÇ¥¸¦ ºñ±³
+		if (bomb[bombX][bombY] == player[playerX][playerY]) {	// ÁÂÇ¥°¡ ÀÏÄ¡ÇÒ °æ¿ì
+			cout << "ÃàÇÏÇÕ´Ï´Ù. ÆøÅºÀ» Á¦°ÅÇÏ¿´½À´Ï´Ù." << endl;
+			return 0;
+		}
+		else {	// ÁÂÇ¥°¡ ºÒÀÏÄ¡ÇÒ °æ¿ì ÁÂÇ¥°ªÀÇ Â÷¸¦ ´õÇÔ
+			
+			// »ç¿ëÀÚ x °ªÀÌ Å©¸é
+			if (bombX <= playerX) 
+				resultX = playerX - bombX;
+			else
+				resultX = bombX - playerX;
+			
+			// »ç¿ëÀÚ y °ªÀÌ Å©¸é
+			if (bombY <= playerY)
+				resultY = playerY - bombY;
+			else
+				resultY = bombY - playerY;
+
+			switch (resultX + resultY)
+			{
+			case 1:
+				cout << "»à»à»à»à»à" << endl;
+				break;
+			case 2:
+				cout << "»à»à»à»à" << endl;
+				break;
+			case 3:
+				cout << "»à»à»à" << endl;
+				break;
+			case 4:
+				cout << "»à»à" << endl;
+				break;
+			case 5:
+				cout << "»à" << endl;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
 	return 0;
 }
